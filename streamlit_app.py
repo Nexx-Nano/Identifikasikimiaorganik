@@ -9,7 +9,6 @@ import urllib.parse  # untuk encode pesan WhatsApp
 
 
 # =============================================================
-SUCCESS = "#388E3C"       # Hijau success
 
 st.markdown("""
 <style>
@@ -273,51 +272,10 @@ if "final_result" not in st.session_state:
 if "page" not in st.session_state:
     st.session_state.page = "Beranda"
 
-
 def reset_flow():
     st.session_state.decision_path = []
     st.session_state.current_node = "molisch"
     st.session_state.final_result = None
-
-# =============================================================
-# FUNGSI HELPER UNTUK PATH GAMBAR
-# =============================================================
-def get_image_path(relative_path: str) -> str:
-    """Mendapatkan path gambar yang benar untuk deployment Streamlit."""
-    # Normalisasi path (mengganti backslash dengan forward slash)
-    normalized_path = relative_path.replace('\\', '/')
-    
-    # Untuk Streamlit Cloud, path relatif dari root biasanya bekerja
-    # Coba beberapa lokasi yang mungkin
-    possible_paths = [
-        normalized_path,  # Path relatif langsung (biasanya bekerja di Streamlit Cloud)
-        os.path.join(os.getcwd(), normalized_path),  # Dari current working directory
-    ]
-    
-    # Jika __file__ tersedia (untuk local development)
-    try:
-        script_dir = Path(__file__).parent
-        possible_paths.extend([
-            str(script_dir / normalized_path),  # Dari folder script
-            str(script_dir.parent / normalized_path),  # Dari parent folder
-        ])
-    except (NameError, AttributeError):
-        # __file__ mungkin tidak tersedia di beberapa environment
-        pass
-    
-    # Coba setiap path
-    for path in possible_paths:
-        # Normalisasi path untuk sistem operasi
-        path_normalized = os.path.normpath(path)
-        if os.path.exists(path_normalized):
-            return path_normalized
-        # Coba dengan forward slash juga (untuk cross-platform)
-        if os.path.exists(path):
-            return path
-    
-    # Jika tidak ditemukan, return path asli
-    # Streamlit akan mencoba load gambar dengan path ini
-    return normalized_path
 
 # =============================================================
 # SIDEBAR
