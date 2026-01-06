@@ -275,10 +275,6 @@ class DecisionNode:
     prompt: str
     options: List[str]
     next_map: Dict[str, str]
-    result: Optional[str] = None
-    result_icon: Optional[str] = None
-    result_desc: Optional[str] = None
-    result_color: Optional[str] = SUCCESS
 
 
 def result_node(node_id: str, name: str, icon: str, desc: str) -> 'DecisionNode':
