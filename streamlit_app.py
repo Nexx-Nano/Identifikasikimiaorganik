@@ -1,249 +1,201 @@
 import streamlit as st
+from dataclasses import dataclass
+from typing import List, Dict, Optional
 
-# ================= CONFIG =================
+# =============================================================
+# KONFIGURASI DASAR
+# =============================================================
 st.set_page_config(
     page_title="Identifikasi Senyawa Organik",
+    page_icon="🔬",
     layout="wide"
 )
 
-st.title("🔬 Identifikasi Senyawa Organik")
+# =============================================================
+# SESSION STATE
+# =============================================================
+st.session_state.setdefault("current_node", "molisch")
+st.session_state.setdefault("final_result", None)
+st.session_state.setdefault("page", "Beranda")
 
-# ================= DATA MATERI =================
-materi = {
-    "Beranda": """
-Identifikasi senyawa organik merupakan tahapan awal yang penting dalam kajian kimia
-untuk mengenali karakteristik suatu senyawa yang mengandung karbon. Senyawa organik
-memiliki peranan luas dalam kehidupan, baik sebagai penyusun sistem biologis maupun
-sebagai bahan dasar dalam berbagai bidang industri, seperti farmasi, pangan, dan
-kimia material.
+def reset_flow():
+    st.session_state.current_node = "molisch"
+    st.session_state.final_result = None
 
-Setiap senyawa organik memiliki struktur dan gugus fungsi yang berbeda, sehingga
-menunjukkan sifat kimia dan reaktivitas yang beragam. Perbedaan tersebut menjadi dasar
-dalam proses identifikasi melalui respon kimia terhadap pereaksi tertentu.
+# =============================================================
+# DATA STRUCTURE
+# =============================================================
+@dataclass
+class DecisionNode:
+    id: str
+    title: str
+    prompt: str
+    options: List[str]
+    next_map: Dict[str, str]
+    result: Optional[str] = None
+    description: Optional[str] = None
 
-Pendekatan awal yang umum digunakan adalah uji kualitatif yang ditandai dengan
-perubahan warna, terbentuknya endapan, atau gejala fisik lainnya.
+NODES: Dict[str, DecisionNode] = {}
 
-Website ini dibuat untuk membantu mahasiswa Nanoteknologi Pangan tingkat awal
-dalam memahami praktikum Kimia Organik secara sistematis dan terstruktur.
+def add(node: DecisionNode):
+    NODES[node.id] = node
 
-Landasan teori merujuk pada:
-- Afriani & Utami (2021)
-- Irawan et al. (2025)
-""",
+def result_node(id, name, desc):
+    return DecisionNode(
+        id=id,
+        title="Hasil Identifikasi",
+        prompt="",
+        options=[],
+        next_map={},
+        result=name,
+        description=desc
+    )
 
-    # ================= BAB 1 =================
-    "Bab 1 – Hidrokarbon": [
-        {
-            "judul": "Percobaan 1 – Pembuatan dan Uji Kimia Alkana",
-            "prinsip": "Pemanasan natrium asetat dengan sodalime menghasilkan metana yang bereaksi dengan larutan brom.",
-            "alat": "Tabung reaksi bertutup selang, pipet tetes, bunsen",
-            "bahan": "Natrium asetat, sodalime, larutan brom, KMnO₄, K₂Cr₂O₇",
-            "cara": [
-                "Masukkan campuran sodalime dan natrium asetat ke tabung reaksi kering",
-                "Panaskan campuran",
-                "Alirkan gas ke larutan brom",
-                "Uji lanjutan dengan KMnO₄ dan K₂Cr₂O₇",
-                "Amati perubahan warna"
-            ],
-            "catatan": "Sodalime adalah campuran Ca(OH)₂ dan NaOH"
-        },
-        {
-            "judul": "Percobaan 2 – Larutan Brom dalam CCl₄",
-            "prinsip": "Alkana, alkena, alkuna, dan benzena menunjukkan reaktivitas berbeda terhadap brom.",
-            "alat": "Tabung reaksi dan pipet tetes",
-            "bahan": "Heksana, minyak tanah, larutan brom 5%",
-            "cara": [
-                "Masukkan sampel ke tabung reaksi",
-                "Tambahkan larutan brom setetes demi setetes",
-                "Amati perubahan warna"
-            ]
-        },
-        {
-            "judul": "Percobaan 3 – Uji Bayer",
-            "prinsip": "Alkena dan alkuna teroksidasi oleh KMnO₄.",
-            "alat": "Tabung reaksi",
-            "bahan": "Heksana, minyak tanah, KMnO₄",
-            "cara": [
-                "Tambahkan KMnO₄ ke sampel",
-                "Amati perubahan warna ungu",
-                "Perhatikan endapan MnO₂"
-            ]
-        }
-    ],
+# =============================================================
+# DECISION TREE (INTI APLIKASI)
+# =============================================================
+add(DecisionNode(
+    id="molisch",
+    title="Uji Molisch",
+    prompt="Bagaimana hasil uji Molisch?",
+    options=["Cincin ungu", "Tidak bereaksi"],
+    next_map={
+        "Cincin ungu": "moore",
+        "Tidak bereaksi": "ninhidrin"
+    }
+))
 
-    # ================= BAB 2 =================
-    "Bab 2 – Alkohol, Fenol, Eter, Halogen Organik": [
-        {
-            "judul": "Percobaan 1 – Uji Kelarutan Alkohol dan Eter",
-            "prinsip": "Gugus OH membentuk ikatan hidrogen dengan air.",
-            "alat": "Tabung reaksi",
-            "bahan": "Etanol, butanol, gliserol, eter",
-            "cara": [
-                "Masukkan air ke tabung",
-                "Tambahkan sampel",
-                "Amati terbentuknya dua fasa"
-            ]
-        },
-        {
-            "judul": "Percobaan 2 – Pembentukan Ester",
-            "prinsip": "Alkohol bereaksi dengan asam membentuk ester beraroma.",
-            "alat": "Tabung reaksi, penangas air",
-            "bahan": "Etanol, asam asetat, H₂SO₄ pekat",
-            "cara": [
-                "Campurkan alkohol dan asam",
-                "Tambahkan katalis",
-                "Panaskan",
-                "Amati aroma"
-            ]
-        },
-        {
-            "judul": "Percobaan 3 – Pereaksi Ceric Nitrat",
-            "prinsip": "Alkohol membentuk kompleks merah dengan Ce(IV).",
-            "alat": "Tabung reaksi",
-            "bahan": "Butanol, fenol, pereaksi ceric nitrat",
-            "cara": [
-                "Tambahkan pereaksi",
-                "Kocok",
-                "Amati warna"
-            ]
-        }
-    ],
+add(DecisionNode(
+    id="moore",
+    title="Uji Moore",
+    prompt="Bagaimana hasil uji Moore?",
+    options=["Positif", "Negatif"],
+    next_map={
+        "Positif": "seliwanoff",
+        "Negatif": "hasil_pati"
+    }
+))
 
-    # ================= BAB 3 =================
-    "Bab 3 – Aldehid dan Keton": [
-        {
-            "judul": "Pereaksi Na-Bisulfit",
-            "prinsip": "Aldehid dan keton membentuk adisi bisulfit.",
-            "alat": "Tabung reaksi",
-            "bahan": "Asetaldehida, benzaldehida, aseton",
-            "cara": [
-                "Tambahkan Na-bisulfit",
-                "Kocok",
-                "Amati endapan putih"
-            ]
-        },
-        {
-            "judul": "Pereaksi Tollens",
-            "prinsip": "Aldehida teroksidasi membentuk cermin perak.",
-            "alat": "Tabung reaksi",
-            "bahan": "Asetaldehida, pereaksi Tollens",
-            "cara": [
-                "Tambahkan pereaksi",
-                "Panaskan",
-                "Amati cermin perak"
-            ]
-        }
-    ],
+add(DecisionNode(
+    id="seliwanoff",
+    title="Uji Seliwanoff",
+    prompt="Bagaimana hasil uji Seliwanoff?",
+    options=["Merah cepat", "Tidak berwarna"],
+    next_map={
+        "Merah cepat": "hasil_fruktosa",
+        "Tidak berwarna": "benedict"
+    }
+))
 
-    # ================= BAB 4 =================
-    "Bab 4 – Asam Karboksilat dan Derivat": [
-        {
-            "judul": "Pembentukan Asam Karboksilat",
-            "prinsip": "Asam karboksilat larut dalam air.",
-            "alat": "Tabung reaksi",
-            "bahan": "Asam asetat, anhidrida asetat",
-            "cara": [
-                "Larutkan dalam air",
-                "Panaskan jika perlu",
-                "Amati kelarutan"
-            ]
-        },
-        {
-            "judul": "Reaksi Penggaraman",
-            "prinsip": "Asam bereaksi dengan basa membentuk garam.",
-            "alat": "Tabung reaksi",
-            "bahan": "NaHCO₃, NaOH",
-            "cara": [
-                "Tambahkan basa",
-                "Amati gas CO₂"
-            ]
-        }
-    ],
+add(DecisionNode(
+    id="benedict",
+    title="Uji Benedict",
+    prompt="Bagaimana hasil uji Benedict?",
+    options=["Endapan merah bata", "Tetap biru"],
+    next_map={
+        "Endapan merah bata": "hasil_laktosa",
+        "Tetap biru": "hasil_tidak_dikenal"
+    }
+))
 
-    # ================= BAB 5 =================
-    "Bab 5 – Amina": [
-        {
-            "judul": "Uji Kelarutan dan Kebasaan",
-            "prinsip": "Amina bersifat basa.",
-            "alat": "Tabung reaksi, kertas pH",
-            "bahan": "Amonia, etilamina",
-            "cara": [
-                "Larutkan amina",
-                "Uji pH"
-            ]
-        }
-    ],
+add(DecisionNode(
+    id="ninhidrin",
+    title="Uji Ninhidrin",
+    prompt="Bagaimana hasil uji Ninhidrin?",
+    options=["Ungu/Biru", "Tidak bereaksi"],
+    next_map={
+        "Ungu/Biru": "hasil_protein",
+        "Tidak bereaksi": "hasil_non_protein"
+    }
+))
 
-    # ================= BAB 6 =================
-    "Bab 6 – Lemak dan Minyak": [
-        {
-            "judul": "Reaksi Penyabunan",
-            "prinsip": "Hidrolisis lemak oleh basa.",
-            "alat": "Tabung reaksi",
-            "bahan": "Minyak, NaOH",
-            "cara": [
-                "Campurkan minyak dan NaOH",
-                "Panaskan",
-                "Amati sabun"
-            ]
-        }
-    ],
+# =============================================================
+# HASIL AKHIR
+# =============================================================
+add(result_node(
+    "hasil_pati",
+    "Pati",
+    "Sampel kemungkinan merupakan polisakarida (pati)."
+))
 
-    # ================= BAB 7 =================
-    "Bab 7 – Karbohidrat": [
-        {
-            "judul": "Uji Molisch",
-            "prinsip": "Karbohidrat membentuk cincin ungu.",
-            "alat": "Tabung reaksi",
-            "bahan": "Glukosa, α-naftol, H₂SO₄",
-            "cara": [
-                "Tambahkan pereaksi",
-                "Amati cincin ungu"
-            ]
-        }
-    ],
+add(result_node(
+    "hasil_fruktosa",
+    "Fruktosa",
+    "Monosakarida golongan ketosa."
+))
 
-    # ================= BAB 8 =================
-    "Bab 8 – Protein": [
-        {
-            "judul": "Uji Biuret",
-            "prinsip": "Ikatan peptida bereaksi membentuk warna ungu.",
-            "alat": "Tabung reaksi",
-            "bahan": "Protein, NaOH, CuSO₄",
-            "cara": [
-                "Tambahkan NaOH",
-                "Tambahkan CuSO₄",
-                "Amati warna ungu"
-            ]
-        }
-    ]
-}
+add(result_node(
+    "hasil_laktosa",
+    "Laktosa",
+    "Disakarida pereduksi dengan hasil Benedict positif."
+))
 
-# ================= MENU =================
-menu = st.sidebar.radio("📘 Daftar Materi", list(materi.keys()))
+add(result_node(
+    "hasil_protein",
+    "Protein / Asam Amino",
+    "Terdeteksi gugus amina melalui uji Ninhidrin."
+))
 
-if menu == "Beranda":
-    st.markdown(materi["Beranda"])
-    st.markdown("---")
+add(result_node(
+    "hasil_non_protein",
+    "Non-Protein",
+    "Sampel tidak menunjukkan reaksi protein."
+))
+
+add(result_node(
+    "hasil_tidak_dikenal",
+    "Tidak Teridentifikasi",
+    "Data uji tidak cukup untuk identifikasi."
+))
+
+# =============================================================
+# RENDER NODE
+# =============================================================
+def render_node(node: DecisionNode):
+    st.subheader(node.title)
+
+    if node.result:
+        st.success(f"**{node.result}**")
+        st.write(node.description)
+        st.button("🔄 Mulai Ulang", on_click=reset_flow)
+        return
+
+    choice = st.radio(node.prompt, node.options)
+
+    if st.button("Lanjut"):
+        next_id = node.next_map.get(choice)
+        if next_id:
+            st.session_state.current_node = next_id
+        else:
+            st.session_state.current_node = "hasil_tidak_dikenal"
+        st.rerun()
+
+# =============================================================
+# SIDEBAR
+# =============================================================
+with st.sidebar:
+    st.title("🧪 Menu")
+    st.session_state.page = st.radio(
+        "Navigasi",
+        ["Beranda", "Identifikasi"]
+    )
+
+# =============================================================
+# HALAMAN
+# =============================================================
+if st.session_state.page == "Beranda":
+    st.title("🔬 Identifikasi Senyawa Organik")
     st.markdown("""
-**Dibuat oleh:**  
-Kelompok 8 – Logika Pemrograman dan Komputasi Data  
+    Aplikasi ini digunakan sebagai **alat bantu pembelajaran**  
+    untuk memahami **alur identifikasi senyawa organik**  
+    menggunakan uji kualitatif dasar.
+    """)
+    st.info("Gunakan menu *Identifikasi* untuk memulai.")
 
-**Sumber:**  
-Irawan et al., 2025  
-Afriani & Utami, 2021
-""")
-else:
-    st.header(menu)
-    for p in materi[menu]:
-        st.subheader(p["judul"])
-        st.write(f"**Prinsip:** {p['prinsip']}")
-        st.write(f"**Alat:** {p['alat']}")
-        st.write(f"**Bahan:** {p['bahan']}")
-        st.markdown("**Cara Kerja:**")
-        for i, langkah in enumerate(p["cara"], 1):
-            st.write(f"{i}. {langkah}")
-        if "catatan" in p:
-            st.info(f"Catatan: {p['catatan']}")
-        st.markdown("---")
+elif st.session_state.page == "Identifikasi":
+    node_id = st.session_state.current_node
+    node = NODES.get(node_id)
+    if node:
+        render_node(node)
+    else:
+        st.error("Node tidak ditemukan.")
