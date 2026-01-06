@@ -9,6 +9,8 @@ import urllib.parse  # untuk encode pesan WhatsApp
 
 
 # =============================================================
+SUCCESS = "#388E3C"       # Hijau success
+
 st.markdown("""
 <style>
 * { font-family: 'Poppins', sans-serif; }
