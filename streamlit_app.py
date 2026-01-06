@@ -1194,7 +1194,7 @@ elif st.session_state.page == "Istilah Penting":
     st.title("📗 Istilah Penting")
     st.markdown("Berikut beberapa istilah yang sering muncul dalam praktikum identifikasi senyawa organik.")
     
-    Istilah penting = {
+    glossary = {
         "Endapan": "Fase padat yang terbentuk dari larutan akibat reaksi kimia.",
         "Emulsi": "Campuran dua fase tak saling larut (misal minyak-air) menghasilkan kekeruhan.",
         "Reagen": "Bahan kimia yang digunakan untuk mendeteksi, mengukur, atau memproduksi senyawa tertentu.",
