@@ -6,141 +6,213 @@ st.set_page_config(
     layout="wide"
 )
 
+st.title("🔬 Identifikasi Senyawa Organik")
+
 # ================= DATA MATERI =================
 materi = {
     "Beranda": """
-### Identifikasi Senyawa Organik
-
 Identifikasi senyawa organik merupakan tahapan awal yang penting dalam kajian kimia
-untuk mengenali karakteristik senyawa yang mengandung karbon. Senyawa organik
-memiliki peranan luas dalam kehidupan, baik sebagai penyusun sistem biologis
-maupun sebagai bahan dasar berbagai industri seperti farmasi, pangan, dan material.
+untuk mengenali karakteristik suatu senyawa yang mengandung karbon. Senyawa organik
+memiliki peranan luas dalam kehidupan, baik sebagai penyusun sistem biologis maupun
+sebagai bahan dasar dalam berbagai bidang industri, seperti farmasi, pangan, dan
+kimia material.
 
-Website ini dibuat sebagai media pembelajaran untuk membantu mahasiswa
-Nanoteknologi Pangan tingkat awal dalam memahami praktikum Kimia Organik
-secara sistematis, terstruktur, dan mudah dipahami.
+Setiap senyawa organik memiliki struktur dan gugus fungsi yang berbeda, sehingga
+menunjukkan sifat kimia dan reaktivitas yang beragam. Perbedaan tersebut menjadi dasar
+dalam proses identifikasi melalui respon kimia terhadap pereaksi tertentu.
+
+Pendekatan awal yang umum digunakan adalah uji kualitatif yang ditandai dengan
+perubahan warna, terbentuknya endapan, atau gejala fisik lainnya.
+
+Website ini dibuat untuk membantu mahasiswa Nanoteknologi Pangan tingkat awal
+dalam memahami praktikum Kimia Organik secara sistematis dan terstruktur.
+
+Landasan teori merujuk pada:
+- Afriani & Utami (2021)
+- Irawan et al. (2025)
 """,
 
+    # ================= BAB 1 =================
     "Bab 1 – Hidrokarbon": [
         {
             "judul": "Percobaan 1 – Pembuatan dan Uji Kimia Alkana",
-            "prinsip": "Pemanasan natrium asetat dengan sodalime menghasilkan gas metana.",
+            "prinsip": "Pemanasan natrium asetat dengan sodalime menghasilkan metana yang bereaksi dengan larutan brom.",
             "alat": "Tabung reaksi bertutup selang, pipet tetes, bunsen",
-            "bahan": "Natrium asetat, sodalime, larutan brom",
+            "bahan": "Natrium asetat, sodalime, larutan brom, KMnO₄, K₂Cr₂O₇",
             "cara": [
                 "Masukkan campuran sodalime dan natrium asetat ke tabung reaksi kering",
-                "Panaskan campuran hingga terbentuk gas",
+                "Panaskan campuran",
                 "Alirkan gas ke larutan brom",
-                "Amati perubahan warna larutan"
+                "Uji lanjutan dengan KMnO₄ dan K₂Cr₂O₇",
+                "Amati perubahan warna"
+            ],
+            "catatan": "Sodalime adalah campuran Ca(OH)₂ dan NaOH"
+        },
+        {
+            "judul": "Percobaan 2 – Larutan Brom dalam CCl₄",
+            "prinsip": "Alkana, alkena, alkuna, dan benzena menunjukkan reaktivitas berbeda terhadap brom.",
+            "alat": "Tabung reaksi dan pipet tetes",
+            "bahan": "Heksana, minyak tanah, larutan brom 5%",
+            "cara": [
+                "Masukkan sampel ke tabung reaksi",
+                "Tambahkan larutan brom setetes demi setetes",
+                "Amati perubahan warna"
+            ]
+        },
+        {
+            "judul": "Percobaan 3 – Uji Bayer",
+            "prinsip": "Alkena dan alkuna teroksidasi oleh KMnO₄.",
+            "alat": "Tabung reaksi",
+            "bahan": "Heksana, minyak tanah, KMnO₄",
+            "cara": [
+                "Tambahkan KMnO₄ ke sampel",
+                "Amati perubahan warna ungu",
+                "Perhatikan endapan MnO₂"
             ]
         }
     ],
 
-    "Bab 2 – Alkohol dan Fenol": [
+    # ================= BAB 2 =================
+    "Bab 2 – Alkohol, Fenol, Eter, Halogen Organik": [
         {
-            "judul": "Percobaan 1 – Uji Kelarutan Alkohol",
-            "prinsip": "Gugus hidroksil (–OH) membentuk ikatan hidrogen dengan air.",
-            "alat": "Tabung reaksi dan pipet tetes",
-            "bahan": "Etanol, 1-butanol, air suling",
+            "judul": "Percobaan 1 – Uji Kelarutan Alkohol dan Eter",
+            "prinsip": "Gugus OH membentuk ikatan hidrogen dengan air.",
+            "alat": "Tabung reaksi",
+            "bahan": "Etanol, butanol, gliserol, eter",
             "cara": [
-                "Masukkan air suling ke tabung reaksi",
-                "Tambahkan alkohol tetes demi tetes",
-                "Homogenkan dan amati kelarutan"
+                "Masukkan air ke tabung",
+                "Tambahkan sampel",
+                "Amati terbentuknya dua fasa"
             ]
         },
         {
             "judul": "Percobaan 2 – Pembentukan Ester",
-            "prinsip": "Alkohol bereaksi dengan asam karboksilat membentuk ester beraroma.",
+            "prinsip": "Alkohol bereaksi dengan asam membentuk ester beraroma.",
             "alat": "Tabung reaksi, penangas air",
-            "bahan": "Etanol, asam asetat, asam sulfat pekat",
+            "bahan": "Etanol, asam asetat, H₂SO₄ pekat",
             "cara": [
-                "Campurkan alkohol dan asam asetat",
-                "Tambahkan katalis asam sulfat",
-                "Panaskan dalam penangas air",
-                "Amati aroma ester yang terbentuk"
+                "Campurkan alkohol dan asam",
+                "Tambahkan katalis",
+                "Panaskan",
+                "Amati aroma"
+            ]
+        },
+        {
+            "judul": "Percobaan 3 – Pereaksi Ceric Nitrat",
+            "prinsip": "Alkohol membentuk kompleks merah dengan Ce(IV).",
+            "alat": "Tabung reaksi",
+            "bahan": "Butanol, fenol, pereaksi ceric nitrat",
+            "cara": [
+                "Tambahkan pereaksi",
+                "Kocok",
+                "Amati warna"
             ]
         }
     ],
 
+    # ================= BAB 3 =================
     "Bab 3 – Aldehid dan Keton": [
+        {
+            "judul": "Pereaksi Na-Bisulfit",
+            "prinsip": "Aldehid dan keton membentuk adisi bisulfit.",
+            "alat": "Tabung reaksi",
+            "bahan": "Asetaldehida, benzaldehida, aseton",
+            "cara": [
+                "Tambahkan Na-bisulfit",
+                "Kocok",
+                "Amati endapan putih"
+            ]
+        },
         {
             "judul": "Pereaksi Tollens",
             "prinsip": "Aldehida teroksidasi membentuk cermin perak.",
-            "alat": "Tabung reaksi dan penangas air",
+            "alat": "Tabung reaksi",
             "bahan": "Asetaldehida, pereaksi Tollens",
             "cara": [
-                "Masukkan pereaksi Tollens ke tabung",
-                "Tambahkan aldehida",
-                "Panaskan perlahan",
-                "Amati terbentuknya cermin perak"
+                "Tambahkan pereaksi",
+                "Panaskan",
+                "Amati cermin perak"
             ]
         }
     ],
 
-    "Bab 4 – Asam Karboksilat": [
+    # ================= BAB 4 =================
+    "Bab 4 – Asam Karboksilat dan Derivat": [
+        {
+            "judul": "Pembentukan Asam Karboksilat",
+            "prinsip": "Asam karboksilat larut dalam air.",
+            "alat": "Tabung reaksi",
+            "bahan": "Asam asetat, anhidrida asetat",
+            "cara": [
+                "Larutkan dalam air",
+                "Panaskan jika perlu",
+                "Amati kelarutan"
+            ]
+        },
         {
             "judul": "Reaksi Penggaraman",
-            "prinsip": "Asam karboksilat bereaksi dengan basa membentuk garam.",
+            "prinsip": "Asam bereaksi dengan basa membentuk garam.",
             "alat": "Tabung reaksi",
-            "bahan": "Asam asetat, NaHCO₃",
+            "bahan": "NaHCO₃, NaOH",
             "cara": [
-                "Masukkan asam karboksilat ke tabung",
-                "Tambahkan larutan NaHCO₃",
-                "Amati terbentuknya gas CO₂"
+                "Tambahkan basa",
+                "Amati gas CO₂"
             ]
         }
     ],
 
+    # ================= BAB 5 =================
     "Bab 5 – Amina": [
         {
             "judul": "Uji Kelarutan dan Kebasaan",
-            "prinsip": "Amina bersifat basa dan dapat larut dalam air.",
-            "alat": "Tabung reaksi dan kertas pH",
-            "bahan": "Etilamina, air suling",
+            "prinsip": "Amina bersifat basa.",
+            "alat": "Tabung reaksi, kertas pH",
+            "bahan": "Amonia, etilamina",
             "cara": [
-                "Larutkan amina dalam air",
-                "Uji pH larutan",
-                "Catat nilai pH"
+                "Larutkan amina",
+                "Uji pH"
             ]
         }
     ],
 
+    # ================= BAB 6 =================
     "Bab 6 – Lemak dan Minyak": [
         {
             "judul": "Reaksi Penyabunan",
-            "prinsip": "Hidrolisis lemak oleh basa menghasilkan sabun.",
-            "alat": "Tabung reaksi dan penangas air",
+            "prinsip": "Hidrolisis lemak oleh basa.",
+            "alat": "Tabung reaksi",
             "bahan": "Minyak, NaOH",
             "cara": [
-                "Campurkan minyak dengan NaOH",
+                "Campurkan minyak dan NaOH",
                 "Panaskan",
-                "Amati terbentuknya sabun"
+                "Amati sabun"
             ]
         }
     ],
 
+    # ================= BAB 7 =================
     "Bab 7 – Karbohidrat": [
         {
             "judul": "Uji Molisch",
-            "prinsip": "Karbohidrat terdehidrasi membentuk furfural.",
+            "prinsip": "Karbohidrat membentuk cincin ungu.",
             "alat": "Tabung reaksi",
-            "bahan": "Glukosa, α-naftol, H₂SO₄ pekat",
+            "bahan": "Glukosa, α-naftol, H₂SO₄",
             "cara": [
-                "Tambahkan α-naftol ke sampel",
-                "Tambahkan H₂SO₄ pekat perlahan",
+                "Tambahkan pereaksi",
                 "Amati cincin ungu"
             ]
         }
     ],
 
+    # ================= BAB 8 =================
     "Bab 8 – Protein": [
         {
             "judul": "Uji Biuret",
-            "prinsip": "Ikatan peptida bereaksi dengan Cu²⁺ membentuk warna ungu.",
+            "prinsip": "Ikatan peptida bereaksi membentuk warna ungu.",
             "alat": "Tabung reaksi",
             "bahan": "Protein, NaOH, CuSO₄",
             "cara": [
-                "Tambahkan NaOH ke sampel",
+                "Tambahkan NaOH",
                 "Tambahkan CuSO₄",
                 "Amati warna ungu"
             ]
@@ -148,10 +220,8 @@ secara sistematis, terstruktur, dan mudah dipahami.
     ]
 }
 
-# ================= UI =================
-st.title("🔬 Identifikasi Senyawa Organik")
-
-menu = st.sidebar.radio("📚 Daftar Materi", list(materi.keys()))
+# ================= MENU =================
+menu = st.sidebar.radio("📘 Daftar Materi", list(materi.keys()))
 
 if menu == "Beranda":
     st.markdown(materi["Beranda"])
@@ -174,4 +244,6 @@ else:
         st.markdown("**Cara Kerja:**")
         for i, langkah in enumerate(p["cara"], 1):
             st.write(f"{i}. {langkah}")
+        if "catatan" in p:
+            st.info(f"Catatan: {p['catatan']}")
         st.markdown("---")
