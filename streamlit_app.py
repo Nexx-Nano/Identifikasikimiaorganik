@@ -1077,7 +1077,7 @@ elif st.session_state.page == "Reaksi":
     # Struktur data untuk konten dari HTML
     reaksi_content = {
         "Bab 1. Hidrokarbon": {
-            "Percobaan 1. Pembuatan dan Uji Kimia Alkana": ["images/image001.jpg", "images/image002.jpg"],
+            "Percobaan 1. Pembuatan dan Uji Kimia Alkana": ["image001.jpg", "images/image002.jpg"],
             "Percobaan 2. Larutan Brom dalam Karbon Tetra Klorida atau Kloroform": ["images/image003.jpg", "images/image004.jpg"],
             "Percobaan 3. Uji Bayer": ["images/image005.jpg", "images/image006.jpg", "images/image007.jpg", "images/image008.jpg"],
             "Percobaan 4. Pembuatan dan uji kimia alkuna": ["images/image009.jpg", "images/image010.jpg"],
