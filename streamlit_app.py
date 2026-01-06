@@ -7,57 +7,9 @@ from typing import Dict, List, Optional, Tuple
 import urllib.parse  # untuk encode subject/body email Gmail
 import urllib.parse  # untuk encode pesan WhatsApp
 
-# =============================================================
-# OPSIONAL: INTEGRASI GOOGLE SHEETS
-# =============================================================
-USE_GOOGLE_SHEETS = True  # ubah ke False jika belum siap
-GSHEETS_CREDENTIALS_FILE = "credentials.json"  # nama file kredensial
-GSHEETS_SPREADSHEET_NAME = "Nama Spreadsheet"  # Ganti dengan nama Google Sheets Anda
-
-_gs_client = None
-_gs_sheet = None
-
-
-def get_gsheet():
-    """Lazy init koneksi Google Sheets. Return worksheet atau None jika gagal."""
-    global _gs_client, _gs_sheet
-    if not USE_GOOGLE_SHEETS:
-        return None
-    if _gs_sheet is not None:
-        return _gs_sheet
-    try:
-        import gspread
-        from oauth2client.service_account import ServiceAccountCredentials
-    except Exception as e:  # modul belum terinstal
-        st.warning("gspread / oauth2client belum terinstal. Menyimpan ke file lokal saja.")
-        return None
-
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    try:
-        creds = ServiceAccountCredentials.from_json_keyfile_name(GSHEETS_CREDENTIALS_FILE, scope)
-        _gs_client = gspread.authorize(creds)
-        _gs_sheet = _gs_client.open(GSHEETS_SPREADSHEET_NAME).sheet1
-        return _gs_sheet
-    except Exception as e:  # kredensial / akses error
-        st.error(f"Gagal koneksi ke Google Sheets: {e}. Akan fallback ke file lokal.")
-        return None
-
 
 # =============================================================
-# KONFIGURASI DASAR APLIKASI
-# =============================================================
-st.set_page_config(
-    page_title="Identifikasi Senyawa Organik",
-    page_icon="🔬",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
-
-# =============================================================
-# TEMA WARNA PROFESIONAL
+# WARNA
 # =============================================================
 PRIMARY = "#0D47A1"       # Biru profesional (indigo)
 SECONDARY = "#1976D2"     # Biru terang
@@ -70,8 +22,6 @@ LIGHT_BG = "#F5F7FA"      # Background putih terang
 DARK_TEXT = "#212121"     # Text gelap
 LIGHT_TEXT = "#757575"    # Text terang
 
-# =============================================================
-# CSS GLOBAL & KOMPONEN UI PROFESIONAL
 # =============================================================
 st.markdown("""
 <style>
