@@ -1,49 +1,4 @@
 import streamlit as st
-import datetime
-import os
-from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
-import urllib.parse  # untuk encode subject/body email Gmail
-import urllib.parse  # untuk encode pesan WhatsApp
-
-# =============================================================
-# OPSIONAL: INTEGRASI GOOGLE SHEETS
-# =============================================================
-USE_GOOGLE_SHEETS = True  # ubah ke False jika belum siap
-GSHEETS_CREDENTIALS_FILE = "credentials.json"  # nama file kredensial
-GSHEETS_SPREADSHEET_NAME = "Nama Spreadsheet"  # Ganti dengan nama Google Sheets Anda
-
-_gs_client = None
-_gs_sheet = None
-
-
-def get_gsheet():
-    """Lazy init koneksi Google Sheets. Return worksheet atau None jika gagal."""
-    global _gs_client, _gs_sheet
-    if not USE_GOOGLE_SHEETS:
-        return None
-    if _gs_sheet is not None:
-        return _gs_sheet
-    try:
-        import gspread
-        from oauth2client.service_account import ServiceAccountCredentials
-    except Exception as e:  # modul belum terinstal
-        st.warning("gspread / oauth2client belum terinstal. Menyimpan ke file lokal saja.")
-        return None
-
-    scope = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    try:
-        creds = ServiceAccountCredentials.from_json_keyfile_name(GSHEETS_CREDENTIALS_FILE, scope)
-        _gs_client = gspread.authorize(creds)
-        _gs_sheet = _gs_client.open(GSHEETS_SPREADSHEET_NAME).sheet1
-        return _gs_sheet
-    except Exception as e:  # kredensial / akses error
-        st.error(f"Gagal koneksi ke Google Sheets: {e}. Akan fallback ke file lokal.")
-        return None
-
 
 # =============================================================
 # KONFIGURASI DASAR APLIKASI
@@ -806,6 +761,46 @@ def reset_flow():
     st.session_state.final_result = None
 
 # =============================================================
+# FUNGSI HELPER UNTUK PATH GAMBAR
+# =============================================================
+def get_image_path(relative_path: str) -> str:
+    """Mendapatkan path gambar yang benar untuk deployment Streamlit."""
+    # Normalisasi path (mengganti backslash dengan forward slash)
+    normalized_path = relative_path.replace('\\', '/')
+    
+    # Untuk Streamlit Cloud, path relatif dari root biasanya bekerja
+    # Coba beberapa lokasi yang mungkin
+    possible_paths = [
+        normalized_path,  # Path relatif langsung (biasanya bekerja di Streamlit Cloud)
+        os.path.join(os.getcwd(), normalized_path),  # Dari current working directory
+    ]
+    
+    # Jika __file__ tersedia (untuk local development)
+    try:
+        script_dir = Path(__file__).parent
+        possible_paths.extend([
+            str(script_dir / normalized_path),  # Dari folder script
+            str(script_dir.parent / normalized_path),  # Dari parent folder
+        ])
+    except (NameError, AttributeError):
+        # __file__ mungkin tidak tersedia di beberapa environment
+        pass
+    
+    # Coba setiap path
+    for path in possible_paths:
+        # Normalisasi path untuk sistem operasi
+        path_normalized = os.path.normpath(path)
+        if os.path.exists(path_normalized):
+            return path_normalized
+        # Coba dengan forward slash juga (untuk cross-platform)
+        if os.path.exists(path):
+            return path
+    
+    # Jika tidak ditemukan, return path asli
+    # Streamlit akan mencoba load gambar dengan path ini
+    return normalized_path
+
+# =============================================================
 # FUNGSI RENDER NODE
 # =============================================================
 
@@ -1273,3 +1268,151 @@ elif st.session_state.page == "Identifikasi Senyawa Organik":
             with st.expander(f"🔎 {name}", expanded=False):
                 st.markdown(f"**Prinsip:**  \n{d['prinsip']}")
                 st.markdown(f"**Prosedur (singkat):**  \n{d['prosedur']}")
+
+# =============================================================
+# HALAMAN: Reaksi
+# =============================================================
+elif st.session_state.page == "Reaksi":
+    st.title("📚 Panduan Praktikum Reaksi Kimia Organik")
+    st.markdown("Panduan lengkap praktikum kimia organik dengan gambar hasil percobaan.")
+    st.divider()
+    
+    # Struktur data untuk konten dari HTML
+    reaksi_content = {
+        "Bab 1. Hidrokarbon": {
+            "Percobaan 1. Pembuatan dan Uji Kimia Alkana": ["images/image001.jpg", "images/image002.jpg"],
+            "Percobaan 2. Larutan Brom dalam Karbon Tetra Klorida atau Kloroform": ["images/image003.jpg", "images/image004.jpg"],
+            "Percobaan 3. Uji Bayer": ["images/image005.jpg", "images/image006.jpg", "images/image007.jpg", "images/image008.jpg"],
+            "Percobaan 4. Pembuatan dan uji kimia alkuna": ["images/image009.jpg", "images/image010.jpg"],
+            "Percobaan 5. Uji Fisika dan Kimia Benzena": ["images/image011.jpg", "images/image012.jpg"],
+        },
+        "Bab 2. Alkohol, Fenol, Eter, Halogen Organik": {
+            "Percobaan 1. Uji Kelarutan Alkohol, Eter": ["images/image013.jpg", "images/image014.jpg"],
+            "Percobaan 2. Pembentukan Senyawa Beraroma": ["images/image015.jpg", "images/image016.jpg"],
+            "Percobaan 3. Pereaksi Ceric Nitrat": ["images/image017.jpg", "images/image018.jpg"],
+            "Percobaan 4. Pereaksi Lucas": ["images/image019.jpg", "images/image020.jpg"],
+            "Percobaan 5. Pereaksi Jones": ["images/image021.jpg", "images/image022.jpg"],
+            "Percobaan 6. Uji Iodoform": ["images/image023.jpg", "images/image024.jpg"],
+            "Percobaan 7. Uji Kelarutan dan Keasaman Fenol": ["images/image025.jpg", "images/image026.jpg"],
+            "Percobaan 8. Uji dengan NaOH, FeCl₃ dan Larutan Brom": {
+                "NaOH": ["images/image027.jpg", "images/image028.jpg"],
+                "FeCl₃": ["images/image029.jpg", "images/image030.jpg"],
+                "Larutan Brom": ["images/image031.jpg", "images/image032.jpg"],
+            },
+            "Percobaan 10. Uji Kelarutan, Uji Bakar Dan Uji Larutan Perak Nitrat Pada Senyawa Halogen Organik": ["images/image033.jpg", "images/image034.jpg"],
+        },
+        "Bab 3. Aldehid Dan Keton": {
+            "Percobaan 1. Pereaksi Na-bisulfit": ["images/image035.jpg", "images/image036.jpg"],
+            "Percobaan 2. Pereaksi Schiff": ["images/image037.jpg", "images/image038.jpg"],
+            "Percobaan 3. Pereaksi Fehling": ["images/image039.jpg", "images/image040.jpg"],
+            "Percobaan 4. Pereaksi Tollens": ["images/image041.jpg", "images/image042.jpg"],
+        },
+        "Bab 4. Asam karboksilat dan derivatnya": {
+            "Percobaan 1. Pembentukan Asam Karboksilat dan Derivatnya": ["images/image043.jpg", "images/image044.jpg"],
+            "Percobaan 2. Reaksi Penggaraman": ["images/image045.jpg", "images/image046.jpg"],
+            "Percobaan 3. Reaksi oksidasi asam karboksilat": ["images/image047.jpg", "images/image048.jpg"],
+            "Percobaan 4. Identifikasi ester dan anhidrida": ["images/image049.jpg", "images/image050.jpg"],
+        },
+        "Bab 5. Senyawa Amina dan derivatnya": {
+            "Percobaan 1. Uji Kelarutan dan Kebasaan": ["images/image051.jpg", "images/image052.jpg"],
+            "Percobaan 2. Pereaksi Benzensulfonil klorida (uji Hinsberg)": ["images/image053.jpg", "images/image054.jpg"],
+            "Percobaan 3. Reaksi diazotisasi, kestabilan garam diazonium dan reaksi kopling": ["images/image055.jpg", "images/image056.jpg", "images/image057.jpg", "images/image058.jpg"],
+            "Percobaan 4. Uji senyawa nitril dan amida": {
+                "Nitril": ["images/image059.jpg", "images/image060.jpg"],
+                "Amida": ["images/image061.jpg", "images/image062.jpg"],
+            },
+        },
+        "Bab 6. Senyawa lemak dan minyak": {
+            "Percobaan 2. Reaksi penyabunan": ["images/image063.jpg", "images/image064.jpg"],
+            "Percobaan 3. Uji ketidakjenuhan dan ketengikan": {
+                "Ketidakjenuhan": ["images/image065.jpg", "images/image066.jpg"],
+                "Ketengikan": ["images/image067.jpg", "images/image068.jpg"],
+            },
+        },
+        "Bab 7. Karbohidrat": {
+            "Percobaan 1. Uji Warna Karbohidrat": {
+                "Molisch": ["images/image069.jpg", "images/image070.jpg"],
+                "Selliwanof dan Bial's": ["images/image071.jpg", "images/image072.jpg"],
+            },
+            "Percobaan 2. Uji Daya Reduksi Gula Pereduksi dan Non Pereduksi": {
+                "Benedict": ["images/image073.jpg", "images/image074.jpg"],
+                "Moore": ["images/image075.jpg", "images/image076.jpg"],
+                "Barfoed": ["images/image077.jpg", "images/image078.jpg"],
+                "Iodium": ["images/image079.jpg", "images/image080.jpg"],
+            },
+        },
+        "Bab 8. Protein": {
+            "Percobaan 1. Uji Umum Protein dan Asam Amino": {
+                "Biuret": ["images/image081.jpg", "images/image082.jpg"],
+                "Ninhidrin": ["images/image083.jpg", "images/image084.jpg"],
+            },
+            "Percobaan 2. Uji warna Protein dan Asam Amino": {
+                "Xanthoprotein": ["images/image085.jpg", "images/image086.jpg"],
+                "Millon": ["images/image087.jpg", "images/image088.jpg"],
+                "Hopkins-cole": ["images/image089.jpg", "images/image090.jpg"],
+            },
+        },
+    }
+    
+    # Buat tabs untuk setiap bab
+    bab_tabs = st.tabs(list(reaksi_content.keys()))
+    
+    for idx, (bab_name, percobaan_dict) in enumerate(reaksi_content.items()):
+        with bab_tabs[idx]:
+            st.subheader(bab_name)
+            st.divider()
+            
+            for percobaan_name, images in percobaan_dict.items():
+                with st.expander(f"🔬 {percobaan_name}", expanded=False):
+                    # Jika images adalah dict (ada sub-percobaan)
+                    if isinstance(images, dict):
+                        for sub_name, sub_images in images.items():
+                            st.markdown(f"**{sub_name}**")
+                            cols = st.columns(min(len(sub_images), 3))
+                            for i, img_path in enumerate(sub_images):
+                                actual_path = get_image_path(img_path)
+                                try:
+                                    # Coba load gambar - Streamlit akan handle error jika tidak ditemukan
+                                    with cols[i % len(cols)]:
+                                        st.image(actual_path, use_container_width=True, caption=f"{sub_name} - Gambar {i+1}")
+                                except Exception as e:
+                                    st.warning(f"Gambar tidak ditemukan: {img_path}")
+                            st.divider()
+                    else:
+                        # Jika images adalah list langsung
+                        cols = st.columns(min(len(images), 3))
+                        for i, img_path in enumerate(images):
+                            actual_path = get_image_path(img_path)
+                            try:
+                                # Coba load gambar - Streamlit akan handle error jika tidak ditemukan
+                                with cols[i % len(cols)]:
+                                    st.image(actual_path, use_container_width=True, caption=f"Gambar {i+1}")
+                            except Exception as e:
+                                st.warning(f"Gambar tidak ditemukan: {img_path}")
+
+# =============================================================
+# HALAMAN: Istilah Penting
+# =============================================================
+elif st.session_state.page == "Istilah Penting":
+    st.title("📗 Istilah Penting")
+    st.markdown("Berikut beberapa istilah yang sering muncul dalam praktikum identifikasi senyawa organik.")
+    
+    glossary = {
+        "Endapan": "Fase padat yang terbentuk dari larutan akibat reaksi kimia.",
+        "Emulsi": "Campuran dua fase tak saling larut (misal minyak-air) menghasilkan kekeruhan.",
+        "Reagen": "Bahan kimia yang digunakan untuk mendeteksi, mengukur, atau memproduksi senyawa tertentu.",
+        "Positif": "Ada respon kimia yang konsisten dengan keberadaan gugus fungsi yang diuji.",
+        "Negatif": "Tidak ada respon spesifik untuk gugus fungsi tersebut.",
+        "Gugus Fungsi": "Kelompok atom dengan sifat kimia khas yang menentukan sifat suatu senyawa.",
+        "Senyawa Organik": "Senyawa yang mengandung karbon sebagai unsur utama.",
+    }
+    
+    for term, definition in glossary.items():
+        st.markdown(f"**{term}**  \n{definition}")
+
+# =============================================================
+# FOOTER
+# =============================================================
+st.divider()
+st.caption("🔬 Aplikasi Identifikasi Senyawa Organik | Dibuat Oleh Kelompok 8 : Dimas Ridho N.A.A (2450153), Hilmy Azry (2460165), Marthin Luther S. (2450178), Nayla Putri Zena (2350194), Zahwa Syahira Alfiliana (2450208)")
+st.caption("Sumber : Irawan, C., Putri, I. D., Rahmatia, L., & Utami, A. (2025) Identifikasi secara kimia gugus fungsi senyawa organik. Yogyakarta: Deepublish. | Kartini Afriani, & Utami, A. (2021). Penuntun praktikum kimia organik. Bogor: Politeknik AKA Bogor, Kementerian Perindustrian Republik Indonesia.")
