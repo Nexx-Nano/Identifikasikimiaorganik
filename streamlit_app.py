@@ -64,7 +64,7 @@ THEORY_LIST: List[Theory] = [
         notes="Sangat sensitif—sedikit gula pun positif. Protein & lipid umumnya negatif kecuali ada kontaminasi gula.",
         safety="H2SO4 pekat bersifat korosif kuat—gunakan pelindung mata & lakukan di lemari asam.",
         tips="Pastikan penambahan asam pelan agar lapisan jelas.",
-    ),
+    ),]
     Theory(
         name="Uji Moore",
         emoji="🟠",
