@@ -1272,4 +1272,4 @@ elif st.session_state.page == "Identifikasi Senyawa Organik":
         for name, d in tests_bab8.items():
             with st.expander(f"🔎 {name}", expanded=False):
                 st.markdown(f"**Prinsip:**  \n{d['prinsip']}")
-                st.markdown(f"**Prosedur (singkat):**  \n{d['prosedur']}") .
+                st.markdown(f"**Prosedur (singkat):**  \n{d['prosedur']}")
