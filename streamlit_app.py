@@ -2,9 +2,6 @@ import streamlit as st
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
-import urllib.parse  # untuk encode subject/body email Gmail
-import urllib.parse  # untuk encode pesan WhatsApp
-
 
 # =============================================================
 
