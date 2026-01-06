@@ -42,7 +42,17 @@ elif menu == "Daftar Uji":
     with st.expander("Uji Benedict"):
         st.write("""
         Uji Benedict digunakan untuk mendeteksi gula pereduksi.
-        Hasil positif ditandai dengan terbentuknya endapan merah bata.
+        Hasil positif ditandai dengan terbentuknya endapan merah bata. name="Uji Moore",
+        emoji="🟠",
+        detects="Gula pereduksi; perbedaan kasar pati vs gula",
+        principle="Gula pereduksi menggelapkan warna (reaksi karamelisasi/aldol kondensasi) dalam suasana basa panas.",
+        reagents="NaOH 10% atau basa kuat serupa.",
+        procedure="Campur sampel dengan NaOH, panaskan beberapa menit (mandi air panas).",
+        positive="Kuning kecoklatan hingga coklat gelap.",
+        negative="Tetap pucat/tidak berubah warna.",
+        notes="Pati murni biasanya negatif kecuali terhidrolisis.",
+        safety="Basa kuat iritan kulit & mata.",
+        tips="Gunakan tabung kontrol kosong untuk banding warna.".
         """)
 
     with st.expander("Uji Ninhidrin"):
