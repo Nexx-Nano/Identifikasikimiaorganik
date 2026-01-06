@@ -320,52 +320,6 @@ def get_image_path(relative_path: str) -> str:
     return normalized_path
 
 # =============================================================
-# FUNGSI RENDER NODE
-# =============================================================
-
-def render_node(node: DecisionNode):
-    st.header(node.title)
-
-    if node.result is not None:
-        color = node.result_color or SUCCESS
-        st.markdown(
-            f"""
-            <div class='result-card' style='border-left-color:{color};'>
-                <h3>{node.result_icon or '✅'} {node.result}</h3>
-                <p>{node.result_desc or ''}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.button("🔄 Mulai Ulang Identifikasi", on_click=reset_flow, use_container_width=True)
-        return
-
-    choice = st.radio(node.prompt, node.options, key=node.id)
-    col1, col2 = st.columns(2)
-    with col1:
-        lanjut = st.button("Lanjut ➡️", key=f"next_{node.id}", use_container_width=True)
-    with col2:
-        ulang = st.button("🔁 Reset", key=f"reset_{node.id}", use_container_width=True)
-
-    if ulang:
-        reset_flow()
-        st.rerun()
-
-    if lanjut:
-        st.session_state.decision_path.append((node.title, choice))
-        nxt = node.next_map.get(choice)
-        if nxt is None:
-            st.session_state.final_result = "warning_generic"
-        else:
-            if nxt in NODES and NODES[nxt].result is not None:
-                st.session_state.final_result = nxt
-            elif nxt in NODES:
-                st.session_state.current_node = nxt
-            else:
-                st.session_state.final_result = "warning_generic"
-        st.rerun()
-
-# =============================================================
 # SIDEBAR
 # =============================================================
 with st.sidebar:
