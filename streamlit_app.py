@@ -1,86 +1,177 @@
 import streamlit as st
 
+# ================= CONFIG =================
 st.set_page_config(
-    page_title="Pengenalan Uji Senyawa Organik",
-    page_icon="🧪",
-    layout="centered"
+    page_title="Identifikasi Senyawa Organik",
+    layout="wide"
 )
 
-menu = st.sidebar.radio(
-    "Menu",
-    ["Beranda", "Daftar Uji", "Tentang"]
-)
+# ================= DATA MATERI =================
+materi = {
+    "Beranda": """
+### Identifikasi Senyawa Organik
 
-# ======================
-# BERANDA
-# ======================
+Identifikasi senyawa organik merupakan tahapan awal yang penting dalam kajian kimia
+untuk mengenali karakteristik senyawa yang mengandung karbon. Senyawa organik
+memiliki peranan luas dalam kehidupan, baik sebagai penyusun sistem biologis
+maupun sebagai bahan dasar berbagai industri seperti farmasi, pangan, dan material.
+
+Website ini dibuat sebagai media pembelajaran untuk membantu mahasiswa
+Nanoteknologi Pangan tingkat awal dalam memahami praktikum Kimia Organik
+secara sistematis, terstruktur, dan mudah dipahami.
+""",
+
+    "Bab 1 – Hidrokarbon": [
+        {
+            "judul": "Percobaan 1 – Pembuatan dan Uji Kimia Alkana",
+            "prinsip": "Pemanasan natrium asetat dengan sodalime menghasilkan gas metana.",
+            "alat": "Tabung reaksi bertutup selang, pipet tetes, bunsen",
+            "bahan": "Natrium asetat, sodalime, larutan brom",
+            "cara": [
+                "Masukkan campuran sodalime dan natrium asetat ke tabung reaksi kering",
+                "Panaskan campuran hingga terbentuk gas",
+                "Alirkan gas ke larutan brom",
+                "Amati perubahan warna larutan"
+            ]
+        }
+    ],
+
+    "Bab 2 – Alkohol dan Fenol": [
+        {
+            "judul": "Percobaan 1 – Uji Kelarutan Alkohol",
+            "prinsip": "Gugus hidroksil (–OH) membentuk ikatan hidrogen dengan air.",
+            "alat": "Tabung reaksi dan pipet tetes",
+            "bahan": "Etanol, 1-butanol, air suling",
+            "cara": [
+                "Masukkan air suling ke tabung reaksi",
+                "Tambahkan alkohol tetes demi tetes",
+                "Homogenkan dan amati kelarutan"
+            ]
+        },
+        {
+            "judul": "Percobaan 2 – Pembentukan Ester",
+            "prinsip": "Alkohol bereaksi dengan asam karboksilat membentuk ester beraroma.",
+            "alat": "Tabung reaksi, penangas air",
+            "bahan": "Etanol, asam asetat, asam sulfat pekat",
+            "cara": [
+                "Campurkan alkohol dan asam asetat",
+                "Tambahkan katalis asam sulfat",
+                "Panaskan dalam penangas air",
+                "Amati aroma ester yang terbentuk"
+            ]
+        }
+    ],
+
+    "Bab 3 – Aldehid dan Keton": [
+        {
+            "judul": "Pereaksi Tollens",
+            "prinsip": "Aldehida teroksidasi membentuk cermin perak.",
+            "alat": "Tabung reaksi dan penangas air",
+            "bahan": "Asetaldehida, pereaksi Tollens",
+            "cara": [
+                "Masukkan pereaksi Tollens ke tabung",
+                "Tambahkan aldehida",
+                "Panaskan perlahan",
+                "Amati terbentuknya cermin perak"
+            ]
+        }
+    ],
+
+    "Bab 4 – Asam Karboksilat": [
+        {
+            "judul": "Reaksi Penggaraman",
+            "prinsip": "Asam karboksilat bereaksi dengan basa membentuk garam.",
+            "alat": "Tabung reaksi",
+            "bahan": "Asam asetat, NaHCO₃",
+            "cara": [
+                "Masukkan asam karboksilat ke tabung",
+                "Tambahkan larutan NaHCO₃",
+                "Amati terbentuknya gas CO₂"
+            ]
+        }
+    ],
+
+    "Bab 5 – Amina": [
+        {
+            "judul": "Uji Kelarutan dan Kebasaan",
+            "prinsip": "Amina bersifat basa dan dapat larut dalam air.",
+            "alat": "Tabung reaksi dan kertas pH",
+            "bahan": "Etilamina, air suling",
+            "cara": [
+                "Larutkan amina dalam air",
+                "Uji pH larutan",
+                "Catat nilai pH"
+            ]
+        }
+    ],
+
+    "Bab 6 – Lemak dan Minyak": [
+        {
+            "judul": "Reaksi Penyabunan",
+            "prinsip": "Hidrolisis lemak oleh basa menghasilkan sabun.",
+            "alat": "Tabung reaksi dan penangas air",
+            "bahan": "Minyak, NaOH",
+            "cara": [
+                "Campurkan minyak dengan NaOH",
+                "Panaskan",
+                "Amati terbentuknya sabun"
+            ]
+        }
+    ],
+
+    "Bab 7 – Karbohidrat": [
+        {
+            "judul": "Uji Molisch",
+            "prinsip": "Karbohidrat terdehidrasi membentuk furfural.",
+            "alat": "Tabung reaksi",
+            "bahan": "Glukosa, α-naftol, H₂SO₄ pekat",
+            "cara": [
+                "Tambahkan α-naftol ke sampel",
+                "Tambahkan H₂SO₄ pekat perlahan",
+                "Amati cincin ungu"
+            ]
+        }
+    ],
+
+    "Bab 8 – Protein": [
+        {
+            "judul": "Uji Biuret",
+            "prinsip": "Ikatan peptida bereaksi dengan Cu²⁺ membentuk warna ungu.",
+            "alat": "Tabung reaksi",
+            "bahan": "Protein, NaOH, CuSO₄",
+            "cara": [
+                "Tambahkan NaOH ke sampel",
+                "Tambahkan CuSO₄",
+                "Amati warna ungu"
+            ]
+        }
+    ]
+}
+
+# ================= UI =================
+st.title("🔬 Identifikasi Senyawa Organik")
+
+menu = st.sidebar.radio("📚 Daftar Materi", list(materi.keys()))
+
 if menu == "Beranda":
-    st.title("🧪 Pengenalan Uji Kualitatif Senyawa Organik")
+    st.markdown(materi["Beranda"])
+    st.markdown("---")
+    st.markdown("""
+**Dibuat oleh:**  
+Kelompok 8 – Logika Pemrograman dan Komputasi Data  
 
-    st.write("""
-    Aplikasi ini dibuat sebagai tugas mata kuliah Kimia Organik.
-    Aplikasi ini bertujuan untuk membantu memahami berbagai
-    uji kualitatif yang digunakan dalam analisis senyawa organik.
-    
-    Informasi yang ditampilkan bersifat teoritis dan tidak
-    dimaksudkan sebagai pengganti kegiatan praktikum di laboratorium.
-    """)
-
-# ======================
-# DAFTAR UJI
-# ======================
-elif menu == "Daftar Uji":
-    st.title("📖 Daftar Uji Kualitatif")
-
-    with st.expander("Uji Molisch"):
-        st.write("""
-        Uji Molisch digunakan untuk mendeteksi keberadaan karbohidrat.
-        Hasil positif ditandai dengan terbentuknya cincin ungu pada
-        batas larutan.
-        """)
-
-    with st.expander("Uji Benedict"):
-        st.write("""
-        Uji Benedict digunakan untuk mendeteksi gula pereduksi.
-        Hasil positif ditandai dengan terbentuknya endapan merah bata. name="Uji Moore",
-        emoji="🟠",
-        detects="Gula pereduksi; perbedaan kasar pati vs gula",
-        principle="Gula pereduksi menggelapkan warna (reaksi karamelisasi/aldol kondensasi) dalam suasana basa panas.",
-        reagents="NaOH 10% atau basa kuat serupa.",
-        procedure="Campur sampel dengan NaOH, panaskan beberapa menit (mandi air panas).",
-        positive="Kuning kecoklatan hingga coklat gelap.",
-        negative="Tetap pucat/tidak berubah warna.",
-        notes="Pati murni biasanya negatif kecuali terhidrolisis.",
-        safety="Basa kuat iritan kulit & mata.",
-        tips="Gunakan tabung kontrol kosong untuk banding warna.".
-        """)
-
-    with st.expander("Uji Ninhidrin"):
-        st.write("""
-        Uji Ninhidrin digunakan untuk mendeteksi protein atau asam amino.
-        Hasil positif ditandai dengan perubahan warna menjadi ungu.
-        """)
-
-    with st.expander("Uji Iodoform"):
-        st.write("""
-        Uji Iodoform digunakan untuk mendeteksi senyawa yang
-        mengandung gugus metil keton atau etanol.
-        Hasil positif ditandai dengan endapan kuning.
-        
-        alat dan bahan : alat gelas,tabung reaksi.
-        """)
-
-# ======================
-# TENTANG
-# ======================
-elif menu == "Tentang":
-    st.title("ℹ️ Tentang Aplikasi")
-
-    st.write("""
-    Aplikasi ini dibuat sebagai bagian dari tugas perkuliahan
-    dan bertujuan untuk membantu mahasiswa memahami teori dasar
-    uji kualitatif senyawa organik.
-    
-    Aplikasi ini tidak melakukan analisis atau identifikasi
-    senyawa secara langsung.
-    """)
+**Sumber:**  
+Irawan et al., 2025  
+Afriani & Utami, 2021
+""")
+else:
+    st.header(menu)
+    for p in materi[menu]:
+        st.subheader(p["judul"])
+        st.write(f"**Prinsip:** {p['prinsip']}")
+        st.write(f"**Alat:** {p['alat']}")
+        st.write(f"**Bahan:** {p['bahan']}")
+        st.markdown("**Cara Kerja:**")
+        for i, langkah in enumerate(p["cara"], 1):
+            st.write(f"{i}. {langkah}")
+        st.markdown("---")
