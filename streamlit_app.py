@@ -55,7 +55,9 @@ elif menu == "Daftar Uji":
         st.write("""
         Uji Iodoform digunakan untuk mendeteksi senyawa yang
         mengandung gugus metil keton atau etanol.
-        Hasil positif ditandai dengan endapan kuning. alat dan bahan : alat gelas,tabung reaksi. 
+        Hasil positif ditandai dengan endapan kuning.
+        ()
+        alat dan bahan : alat gelas,tabung reaksi.
         """)
 
 # ======================
