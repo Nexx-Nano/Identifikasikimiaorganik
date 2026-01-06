@@ -9,20 +9,6 @@ import urllib.parse  # untuk encode pesan WhatsApp
 
 
 # =============================================================
-# WARNA
-# =============================================================
-PRIMARY = "#0D47A1"       # Biru profesional (indigo)
-SECONDARY = "#1976D2"     # Biru terang
-ACCENT = "#FF6F00"        # Orange aksen
-SUCCESS = "#388E3C"       # Hijau success
-WARNING = "#F57C00"       # Orange warning
-DANGER = "#D32F2F"        # Merah error
-INFO = "#0288D1"          # Biru info
-LIGHT_BG = "#F5F7FA"      # Background putih terang
-DARK_TEXT = "#212121"     # Text gelap
-LIGHT_TEXT = "#757575"    # Text terang
-
-# =============================================================
 st.markdown("""
 <style>
 * { font-family: 'Poppins', sans-serif; }
