@@ -793,34 +793,6 @@ elif st.session_state.page == "Reaksi":
             st.subheader(bab_name)
             st.divider()
             
-            for percobaan_name, images in percobaan_dict.items():
-                with st.expander(f"🔬 {percobaan_name}", expanded=False):
-                    # Jika images adalah dict (ada sub-percobaan)
-                    if isinstance(images, dict):
-                        for sub_name, sub_images in images.items():
-                            st.markdown(f"**{sub_name}**")
-                            cols = st.columns(min(len(sub_images), 3))
-                            for i, img_path in enumerate(sub_images):
-                                actual_path = get_image_path(img_path)
-                                try:
-                                    # Coba load gambar - Streamlit akan handle error jika tidak ditemukan
-                                    with cols[i % len(cols)]:
-                                        st.image(actual_path, use_container_width=True, caption=f"{sub_name} - Gambar {i+1}")
-                                except Exception as e:
-                                    st.warning(f"Gambar tidak ditemukan: {img_path}")
-                            st.divider()
-                    else:
-                        # Jika images adalah list langsung
-                        cols = st.columns(min(len(images), 3))
-                        for i, img_path in enumerate(images):
-                            actual_path = get_image_path(img_path)
-                            try:
-                                # Coba load gambar - Streamlit akan handle error jika tidak ditemukan
-                                with cols[i % len(cols)]:
-                                    st.image(actual_path, use_container_width=True, caption=f"Gambar {i+1}")
-                            except Exception as e:
-                                st.warning(f"Gambar tidak ditemukan: {img_path}")
-
 # =============================================================
 # HALAMAN: Istilah Penting
 # =============================================================
